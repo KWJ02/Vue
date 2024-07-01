@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gugudan</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+  <div id="root">
+    <div>{{num1}} 곱하기 {{num2}}은?</div> <!-- html에서 Vue의 data의 값을 가져올 때는 {{ 변수 }} 사용 -->
+    <form v-on:submit="onsubmitBtn">
+      <input type="number" v-model="input" ref="answer"> <!-- ref는 커서 포커싱을 위한 수단. 어쩔 수 없을때만 사용. 남용 금지 -->
+      <button type="submit">입력</button>
+      <div>{{result}}</div>
+    </form>
+    <div>맞춘 횟수 : {{correct}}</div>
+    <div>틀린 횟수 : {{wrong}}</div>
+  </div>
+</body>
+<script>
+  const app = new Vue({
+    el: '#root',
+    data: {
+      num1: Math.ceil(Math.random() * 10),
+      num2: Math.ceil(Math.random() * 10),
+      input: '',
+      result: '',
+      correct : 0,
+      wrong : 0,
+    },
+    methods: {
+      onsubmitBtn(event) {
+        console.log(this)
+        event.preventDefault();
+        if(this.num1 * this.num2 === parseInt(this.input)){
+          this.correct += 1
+          this.result = '정답!';
+          this.num1 = Math.ceil(Math.random() * 10)
+          this.num2 = Math.ceil(Math.random() * 10)
+          this.input = ''
+        } else {
+          this.wrong += 1
+          this.result = '오답!';
+          this.input= ''
+        }
+        this.$refs.answer.focus()
+      }
+    }
+  });
+</script>
+</html>
